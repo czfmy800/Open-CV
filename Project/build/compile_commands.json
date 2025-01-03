@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/mnt/d/Project/cpp/Project/build",
+  "command": "/usr/bin/g++  -I/mnt/d/Project/cpp/Project/inc -isystem /usr/local/include/opencv4 -g -o CMakeFiles/MyExecutable.dir/src/main.cpp.o -c /mnt/d/Project/cpp/Project/src/main.cpp",
+  "file": "/mnt/d/Project/cpp/Project/src/main.cpp"
+},
+{
+  "directory": "/mnt/d/Project/cpp/Project/build",
+  "command": "/usr/bin/g++  -I/mnt/d/Project/cpp/Project/inc -isystem /usr/local/include/opencv4 -g -o CMakeFiles/MyExecutable.dir/src/resize.cpp.o -c /mnt/d/Project/cpp/Project/src/resize.cpp",
+  "file": "/mnt/d/Project/cpp/Project/src/resize.cpp"
+}
+]
