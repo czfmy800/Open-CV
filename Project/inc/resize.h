@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <opencv2/opencv.hpp>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 using namespace cv;
 

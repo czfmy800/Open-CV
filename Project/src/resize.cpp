@@ -22,8 +22,8 @@ void resize(const Mat& src, Mat& dst, double fx, double fy) {
     for (int i = 0; i < dst_rows; ++i) {
         for (int j = 0; j < dst_cols; ++j) {
             // 计算在源图像中的对应位置
-            int src_i = static_cast<int>(i * fy);
-            int src_j = static_cast<int>(j * fx);
+            int src_i = round(i * fy);
+            int src_j = round(j * fx);
 
             // 边界检查，确保不越界
             src_i = min(max(src_i, 0), src_rows - 1);
@@ -63,8 +63,8 @@ void resize_parallel(const Mat& src, Mat& dst, double fx, double fy) {
         for (int i = r.start; i < r.end; ++i) {
             for (int j = 0; j < dst_cols; ++j) {
                 // 计算在源图像中的对应位置
-                int src_i = static_cast<int>(i * fy);
-                int src_j = static_cast<int>(j * fx);
+                int src_i = round(i * fy);
+                int src_j = round(j * fx);
                 // 边界检查
                 src_i = std::clamp(src_i, 0, src_rows - 1);
                 src_j = std::clamp(src_j, 0, src_cols - 1);

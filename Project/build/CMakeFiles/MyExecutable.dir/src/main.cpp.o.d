@@ -1,11 +1,6 @@
 CMakeFiles/MyExecutable.dir/src/main.cpp.o: \
- /mnt/d/Project/cpp/Project/src/main.cpp /usr/include/stdc-predef.h \
- /usr/local/include/opencv4/opencv2/opencv.hpp \
- /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
- /usr/local/include/opencv4/opencv2/core.hpp \
- /usr/local/include/opencv4/opencv2/core/cvdef.h \
- /usr/local/include/opencv4/opencv2/core/version.hpp \
- /usr/include/c++/11/limits \
+ /home/administrator/Project/src/main.cpp /usr/include/stdc-predef.h \
+ /usr/include/c++/11/cstddef \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -17,9 +12,14 @@ CMakeFiles/MyExecutable.dir/src/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
  /usr/include/c++/11/pstl/pstl_config.h \
- /usr/local/include/opencv4/opencv2/core/hal/interface.h \
- /usr/include/c++/11/cstddef \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+ /usr/local/include/opencv4/opencv2/opencv.hpp \
+ /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
+ /usr/local/include/opencv4/opencv2/core.hpp \
+ /usr/local/include/opencv4/opencv2/core/cvdef.h \
+ /usr/local/include/opencv4/opencv2/core/version.hpp \
+ /usr/include/c++/11/limits \
+ /usr/local/include/opencv4/opencv2/core/hal/interface.h \
  /usr/include/c++/11/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -362,4 +362,4 @@ CMakeFiles/MyExecutable.dir/src/main.cpp.o: \
  /usr/local/include/opencv4/opencv2/video.hpp \
  /usr/local/include/opencv4/opencv2/video/tracking.hpp \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
- /mnt/d/Project/cpp/Project/inc/resize.h
+ /home/administrator/Project/inc/resize.h

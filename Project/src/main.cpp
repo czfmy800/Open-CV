@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "resize.h"
@@ -13,76 +14,159 @@ int main() {
     // 参数定义
     double fx = 20;
     double fy = 20;
-    int test_times = 1000000;
+    int test_times = 100000;
 
-    // cv::Size
-    auto start = std::chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < test_times; i++){
-        Mat dst;
-        cv::Size dsize(image.rows/fy, image.cols/fx);
-        cv::resize(image,dst,dsize,fx,fy,0);
-    }
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    std::cout << "cv::Size\n" << test_times << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
-
-    // resize_parallel
-    start = std::chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < test_times; i++){
-        Mat dst;
-        resize_parallel(image,dst,fx,fy);
-    }
-    end = std::chrono::high_resolution_clock::now();
-    elapsed = end - start;
-    std::cout << "resize_parallel\n" << test_times << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
-
-    // resize_parallel_const
-    start = std::chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < test_times; i++){
-        Mat dst;
-        resize_parallel_const(image,dst,fx,fy);
-    }
-    end = std::chrono::high_resolution_clock::now();
-    elapsed = end - start;
-    std::cout << "resize_parallel_const\n" << test_times << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
-
-    // 自定义——串行计时
-    start = std::chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < test_times/100; i++){
+    // ---------------------------------------------------------
+    // *                ** P1 最近邻插值实现 **                 *
+    // ---------------------------------------------------------
+    {
         Mat dst;
         resize(image,dst,fx,fy);
+        cv::imwrite("../P1_resized_SUSTech.jpg", dst);
+        
+        cout << "P1 is down\n";
     }
-    end = std::chrono::high_resolution_clock::now();
-    elapsed = end - start;
-    std::cout << "resize\n" << test_times/100 << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
+
+    // ---------------------------------------------------------
+    // *                ** P2 多通道支持 **                     *
+    // ---------------------------------------------------------
+    {
+        // one channel
+        std::vector<cv::Mat> channels;
+        cv::split(image, channels);
+        cv::imwrite("../P2_00_SUSTech_one_channel.jpg", channels[0]);
+        Mat dst1;
+        resize(channels[0],dst1,fx,fy);
+        cv::imwrite("../P2_00_resized_SUSTech_one_channel.jpg", dst1);
+
+        // three channels
+        cv::imwrite("../P2_01_SUSTech_three_channel.jpg", image);
+        Mat dst3;
+        resize(image,dst3,fx,fy);
+        cv::imwrite("../P2_01_resized_SUSTech_three_channel.jpg", dst3);
+
+        cout << "P2 is down\n";
+    }
+
+    // ---------------------------------------------------------
+    // *                ** P3 图像放大缩小支持 **               *
+    // ---------------------------------------------------------
+    {
+        // enlarge
+        fx = 0.25;
+        fy = 0.25;
+        Mat dst1;
+        resize(image,dst1,fx,fy);
+        cv::imwrite("../P3_00_enlarged_SUSTech.jpg", dst1);
+
+        // minify
+        fx = 15;
+        fy = 15;
+        Mat dst2;
+        resize(image,dst2,fx,fy);
+        cv::imwrite("../P3_01_minify_SUSTech.jpg", dst2);
+
+        cout << "P3 is down\n";
+    }
+
+    // ---------------------------------------------------------
+    // *                ** P4 多线程实现 **                     *
+    // ---------------------------------------------------------
+    {
+        // save image
+        Mat dst1;
+        resize(image,dst1,fx,fy);
+        cv::imwrite("../P4_00_normal_SUSTech.jpg", dst1);
+        Mat dst2;
+        resize_parallel(image,dst2,fx,fy);
+        cv::imwrite("../P4_00_parallel_SUSTech.jpg", dst2);
+
+        // normal one
+        fx = 20;
+        fy = 20;
+        int new_times = test_times/1;
+        auto start = std::chrono::high_resolution_clock::now();
+        for (std::size_t i = 0; i < new_times; i++){
+            Mat dst;
+            resize(image,dst,fx,fy);
+        }
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::chrono::duration<double> time_pre_test = elapsed/(new_times);
+        std::cout << "normal resize\t" 
+                    << new_times << "\tElapsed time: " << elapsed.count() << " seconds\t" 
+                    << "average excuation time pre test: " << time_pre_test.count() << std::endl;
+
+        // parallel one
+        start = std::chrono::high_resolution_clock::now();
+        for (std::size_t i = 0; i < test_times; i++){
+            Mat dst;
+            resize_parallel(image,dst,fx,fy);
+        }
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = end - start;
+        std::chrono::duration<double> time_pre_test_2 = elapsed/(test_times);
+        std::cout << "parallel resize\t" 
+                    << test_times << "\tElapsed time: " << elapsed.count() << " seconds\t" 
+                    << "average excuation time pre test: " << time_pre_test_2.count() << std::endl;
+
+        // compare
+        std::cout << "speed up: " << time_pre_test.count()/time_pre_test_2.count() << " times" << std::endl;
+
+        cout << "P4 is down\n";
+    }
+
+    // ---------------------------------------------------------
+    // *                ** P5 对比分析 **                       *
+    // ---------------------------------------------------------
+    {
+        // save image
+        Mat dst1;
+        cv::Size dsize(image.rows/fy, image.cols/fx);
+        cv::resize(image,dst1,dsize,fx,fy,0);
+        cv::imwrite("../P5_00_OpenCV_SUSTech.jpg", dst1);
+        Mat dst2;
+        resize_parallel(image,dst2,fx,fy);
+        cv::imwrite("../P5_00_parallel_SUSTech.jpg", dst2);
+
+        // OpenCV
+        auto start = std::chrono::high_resolution_clock::now();
+        for (std::size_t i = 0; i < test_times; i++){
+            Mat dst;
+            cv::Size dsize(image.rows/fy, image.cols/fx);
+            cv::resize(image,dst,dsize,fx,fy,0);
+        }
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::chrono::duration<double> time_pre_test_1 = elapsed/(test_times);
+        std::cout << "OenCV\t\t" 
+                    << test_times << " Elapsed time: " << elapsed.count() << " seconds\t"
+                    << "average excuation time pre test: " << time_pre_test_1.count() << std::endl;
+
+        // our best
+        start = std::chrono::high_resolution_clock::now();
+        for (std::size_t i = 0; i < test_times; i++){
+            Mat dst;
+            resize_parallel(image,dst,fx,fy);
+        }
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = end - start;
+        std::chrono::duration<double> time_pre_test_2 = elapsed/(test_times);
+        std::cout << "parallel resize\t" 
+                    << test_times << " Elapsed time: " << elapsed.count() << " seconds\t" 
+                    << "average excuation time pre test: " << time_pre_test_2.count() << std::endl;
+
+
+        // compare
+        std::cout << "OpenCV is speed up: " << time_pre_test_2.count()/time_pre_test_1.count() << " times" << std::endl;             
+    
+        cout << "P5 is down\n";
+    }
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // imwrite("../out.jpg", dst);
-    // cout << "缩放因子: \t"      << fy           << "\t" << fx           << endl;
-    // cout << "原文件尺寸: \t"    << image.rows   << "\t" << image.cols   << endl;
-    // cout << "目标文件尺寸:\t"   << dst.rows     << "\t" << dst.cols     << endl;
     return 0;
 }
 

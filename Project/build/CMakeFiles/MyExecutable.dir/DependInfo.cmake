@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/mnt/d/Project/cpp/Project/src/main.cpp" "CMakeFiles/MyExecutable.dir/src/main.cpp.o" "gcc" "CMakeFiles/MyExecutable.dir/src/main.cpp.o.d"
-  "/mnt/d/Project/cpp/Project/src/resize.cpp" "CMakeFiles/MyExecutable.dir/src/resize.cpp.o" "gcc" "CMakeFiles/MyExecutable.dir/src/resize.cpp.o.d"
+  "/home/administrator/Project/src/main.cpp" "CMakeFiles/MyExecutable.dir/src/main.cpp.o" "gcc" "CMakeFiles/MyExecutable.dir/src/main.cpp.o.d"
+  "/home/administrator/Project/src/resize.cpp" "CMakeFiles/MyExecutable.dir/src/resize.cpp.o" "gcc" "CMakeFiles/MyExecutable.dir/src/resize.cpp.o.d"
   )
 
 # Targets to which this target links.

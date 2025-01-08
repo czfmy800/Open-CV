@@ -1,6 +1,6 @@
 CMakeFiles/MyExecutable.dir/src/resize.cpp.o: \
- /mnt/d/Project/cpp/Project/src/resize.cpp /usr/include/stdc-predef.h \
- /mnt/d/Project/cpp/Project/inc/resize.h /usr/include/c++/11/vector \
+ /home/administrator/Project/src/resize.cpp /usr/include/stdc-predef.h \
+ /home/administrator/Project/inc/resize.h /usr/include/c++/11/vector \
  /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

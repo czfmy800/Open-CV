@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/d/Project/cpp/Project
+CMAKE_SOURCE_DIR = /home/administrator/Project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/d/Project/cpp/Project/build
+CMAKE_BINARY_DIR = /home/administrator/Project/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/MyExecutable.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/MyExecutable.dir/flags.make
 CMakeFiles/MyExecutable.dir/src/main.cpp.o: CMakeFiles/MyExecutable.dir/flags.make
 CMakeFiles/MyExecutable.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/MyExecutable.dir/src/main.cpp.o: CMakeFiles/MyExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/Project/cpp/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MyExecutable.dir/src/main.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/main.cpp.o -MF CMakeFiles/MyExecutable.dir/src/main.cpp.o.d -o CMakeFiles/MyExecutable.dir/src/main.cpp.o -c /mnt/d/Project/cpp/Project/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/administrator/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MyExecutable.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/main.cpp.o -MF CMakeFiles/MyExecutable.dir/src/main.cpp.o.d -o CMakeFiles/MyExecutable.dir/src/main.cpp.o -c /home/administrator/Project/src/main.cpp
 
 CMakeFiles/MyExecutable.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyExecutable.dir/src/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/Project/cpp/Project/src/main.cpp > CMakeFiles/MyExecutable.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/administrator/Project/src/main.cpp > CMakeFiles/MyExecutable.dir/src/main.cpp.i
 
 CMakeFiles/MyExecutable.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyExecutable.dir/src/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/Project/cpp/Project/src/main.cpp -o CMakeFiles/MyExecutable.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/administrator/Project/src/main.cpp -o CMakeFiles/MyExecutable.dir/src/main.cpp.s
 
 CMakeFiles/MyExecutable.dir/src/resize.cpp.o: CMakeFiles/MyExecutable.dir/flags.make
 CMakeFiles/MyExecutable.dir/src/resize.cpp.o: ../src/resize.cpp
 CMakeFiles/MyExecutable.dir/src/resize.cpp.o: CMakeFiles/MyExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/Project/cpp/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MyExecutable.dir/src/resize.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/resize.cpp.o -MF CMakeFiles/MyExecutable.dir/src/resize.cpp.o.d -o CMakeFiles/MyExecutable.dir/src/resize.cpp.o -c /mnt/d/Project/cpp/Project/src/resize.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/administrator/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MyExecutable.dir/src/resize.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/resize.cpp.o -MF CMakeFiles/MyExecutable.dir/src/resize.cpp.o.d -o CMakeFiles/MyExecutable.dir/src/resize.cpp.o -c /home/administrator/Project/src/resize.cpp
 
 CMakeFiles/MyExecutable.dir/src/resize.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyExecutable.dir/src/resize.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/Project/cpp/Project/src/resize.cpp > CMakeFiles/MyExecutable.dir/src/resize.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/administrator/Project/src/resize.cpp > CMakeFiles/MyExecutable.dir/src/resize.cpp.i
 
 CMakeFiles/MyExecutable.dir/src/resize.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyExecutable.dir/src/resize.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/Project/cpp/Project/src/resize.cpp -o CMakeFiles/MyExecutable.dir/src/resize.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/administrator/Project/src/resize.cpp -o CMakeFiles/MyExecutable.dir/src/resize.cpp.s
 
 # Object files for target MyExecutable
 MyExecutable_OBJECTS = \
@@ -124,7 +124,7 @@ MyExecutable: /usr/local/lib/libopencv_flann.so.4.10.0
 MyExecutable: /usr/local/lib/libopencv_imgproc.so.4.10.0
 MyExecutable: /usr/local/lib/libopencv_core.so.4.10.0
 MyExecutable: CMakeFiles/MyExecutable.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/d/Project/cpp/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable MyExecutable"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/administrator/Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable MyExecutable"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyExecutable.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -136,6 +136,6 @@ CMakeFiles/MyExecutable.dir/clean:
 .PHONY : CMakeFiles/MyExecutable.dir/clean
 
 CMakeFiles/MyExecutable.dir/depend:
-	cd /mnt/d/Project/cpp/Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/d/Project/cpp/Project /mnt/d/Project/cpp/Project /mnt/d/Project/cpp/Project/build /mnt/d/Project/cpp/Project/build /mnt/d/Project/cpp/Project/build/CMakeFiles/MyExecutable.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/administrator/Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/administrator/Project /home/administrator/Project /home/administrator/Project/build /home/administrator/Project/build /home/administrator/Project/build/CMakeFiles/MyExecutable.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/MyExecutable.dir/depend
 
