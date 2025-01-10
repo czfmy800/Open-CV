@@ -1,0 +1,70 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(MyProject CXX)
+set(CMAKE_CXX_STANDARD 17)
+
+# 查找OpenCV库
+find_package(OpenCV REQUIRED)
+
+# 查找 OpenMP 库
+# find_package(OpenMP)
+
+# 包含OpenCV的头文件目录
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+# 包含项目的头文件目录
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+# 明确列出所有源文件，包括包含main函数的main.cpp
+set(SOURCES
+    src/main_simd.cpp
+    src/resize.cpp
+    # 继续添加其他源文件
+)
+
+# 添加可执行文件，并链接OpenCV库
+add_executable(MyExecutable ${SOURCES})
+target_link_libraries(MyExecutable PRIVATE ${OpenCV_LIBS})
+
+# 检测并启用AVX支持
+include(CheckCXXCompilerFlag)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    # 对于 GCC 和 Clang
+    CHECK_CXX_COMPILER_FLAG("-mavx512f" COMPILER_SUPPORTS_AVX512F)
+    CHECK_CXX_COMPILER_FLAG("-mavx2" COMPILER_SUPPORTS_AVX2)
+elseif(MSVC)
+    # 对于 MSVC
+    CHECK_CXX_COMPILER_FLAG("/arch:AVX512" COMPILER_SUPPORTS_AVX512F)
+    CHECK_CXX_COMPILER_FLAG("/arch:AVX2" COMPILER_SUPPORTS_AVX2)
+else()
+    message(WARNING "未知的编译器，无法检测 AVX 支持。")
+endif()
+
+if(COMPILER_SUPPORTS_AVX512F)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(MyExecutable PRIVATE -mavx512f -O3)
+    elseif(MSVC)
+        target_compile_options(MyExecutable PRIVATE /arch:AVX512 /O2)
+    endif()
+    message(STATUS "AVX-512F supported and enabled")
+elseif(COMPILER_SUPPORTS_AVX2)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(MyExecutable PRIVATE -mavx2 -O3)
+    elseif(MSVC)
+        target_compile_options(MyExecutable PRIVATE /arch:AVX2 /O2)
+    endif()
+    message(STATUS "AVX2 supported and enabled as fallback")
+else()
+    message(WARNING "Neither AVX-512F nor AVX2 is supported by the compiler. The program may not be optimized.")
+    # 可选：在这里添加不使用 AVX512/AVX2 的回退实现
+endif()
+
+# 添加 OpenMP 支持
+# if(OpenMP_CXX_FOUND)
+#     target_link_libraries(MyExecutable PRIVATE OpenMP::OpenMP_CXX)
+#     target_compile_options(MyExecutable PRIVATE ${OpenMP_CXX_FLAGS})
+#     message(STATUS "OpenMP support enabled")
+# else()
+#     message(WARNING "OpenMP not found. The program will be compiled without OpenMP support.")
+# endif()
