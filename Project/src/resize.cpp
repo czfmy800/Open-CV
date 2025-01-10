@@ -12,8 +12,8 @@ void resize(const Mat& src, Mat& dst, double fx, double fy) {
     int src_channels = src.channels();
 
     // 计算目标图像的尺寸
-    int dst_rows = static_cast<int>(src_rows / fy);
-    int dst_cols = static_cast<int>(src_cols / fx);
+    int dst_rows = round(src_rows / fy);
+    int dst_cols = round(src_cols / fx);
 
     // 更新缩放比例
     // fx = src_cols / static_cast<double>(dst_cols);
@@ -55,8 +55,8 @@ void resize_parallel(const Mat& src, Mat& dst, double fx, double fy) {
     int src_channels = src.channels();
 
     // 计算目标图像的尺寸
-    int dst_rows = static_cast<int>(src_rows / fy);
-    int dst_cols = static_cast<int>(src_cols / fx);
+    int dst_rows = round(src_rows / fy);
+    int dst_cols = round(src_cols / fx);
     
     // 创建目标图像，类型与源图像相同
     dst.create(dst_rows, dst_cols, src.type());
@@ -97,9 +97,10 @@ void resize_bilinear(const Mat& src, Mat& dst, double fx, double fy) {
     // 创建目标图像，类型与源图像相同
     dst.create(dst_rows, dst_cols, src.type());
 
-    // 遍历目标图像中的每个像素
-    for (int i = 0; i < dst_rows; ++i) {
-        for (int j = 0; j < dst_cols; ++j) {
+    cv::parallel_for_(cv::Range(0, dst_rows), [&](const cv::Range& r) {
+        // cout << "Thread processing rows: " << r.start << " to " << r.end - 1 << endl;
+        for (int i = r.start; i < r.end; ++i) {
+            for (int j = 0; j < dst_cols; ++j) {
             // 计算在源图像中的对应位置
             double src_i = (i+0.5)*fx-0.5;
             double src_j = (j+0.5)*fy-0.5;
@@ -114,8 +115,8 @@ void resize_bilinear(const Mat& src, Mat& dst, double fx, double fy) {
             x1 = min(max(x1, 0), src_rows - 1);
             y1 = min(max(y1, 0), src_cols - 1);
             x2 = min(max(x2, 0), src_rows - 1);
-            y2 = min(max(y2, 0), src_cols - 1);
-
+            y2 = min(max(y2, 0), src_cols - 1); 
+            
             // 计算双线性插值权重
             double w_x2 = src_i - x1;
             double w_x1 = 1-w_x2;
@@ -136,8 +137,51 @@ void resize_bilinear(const Mat& src, Mat& dst, double fx, double fy) {
                     dst.at<Vec3b>(i, j)[c] = static_cast<uchar>(w_y1*I_y1 + w_y2*I_y2);
                 }
             }
+            }
         }
-    }
+    });
 }
 
+void Opencv_resize_test_case(string img_path, string save_opencv_path, string save_resize_path, double fx, double fy){
+    Mat image = cv::imread(img_path);
+    Mat dst1;
+    cv::resize(image,dst1,cv::Size(),1/fx,1/fy,0);
+    cv::imwrite(save_opencv_path, dst1);
+    Mat dst2;
+    resize_parallel(image,dst2,fx,fy);
+    cv::imwrite(save_resize_path, dst2);
 
+
+    // 检查尺寸是否一致
+    if (dst1.size() != dst2.size()) {
+        cerr << "ERROR: The sizes of the two images do not match." << endl;
+        cerr << "dst1 size: " << dst1.size() << endl;
+        cerr << "dst2 size: " << dst2.size() << endl;
+        return;
+    }
+
+    // 检查类型是否一致
+    if (dst1.type() != dst2.type()) {
+        cerr << "ERROR: The types of the two images do not match." << endl;
+        return;
+    }
+
+    // 使用cv::compare函数比较两张图片
+    cv::Mat diff;
+    cv::compare(dst1, dst2, diff, cv::CMP_NE);
+
+   // 将差异矩阵转换为单通道
+    cv::Mat diff_gray;
+    cv::cvtColor(diff, diff_gray, cv::COLOR_BGR2GRAY);
+
+    // 计算不同像素的数量
+    int numDiffPixels = cv::countNonZero(diff_gray);
+
+    if (numDiffPixels == 0)
+    {
+        cout << "MATCH: two images are same" << endl;
+    } else {
+        cout << "ERROR: two images are different" << endl;
+    }
+    
+}

@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/administrator/Project/inc -isystem /usr/local/include/opencv4
 
-CXX_FLAGS = 
+CXX_FLAGS =  -O3
 

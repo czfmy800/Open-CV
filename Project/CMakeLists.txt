@@ -16,3 +16,6 @@ file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 # 添加可执行文件，并链接OpenCV库
 add_executable(MyExecutable ${SOURCES})
 target_link_libraries(MyExecutable ${OpenCV_LIBS})
+
+# 设置编译器优化等级为O3
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
