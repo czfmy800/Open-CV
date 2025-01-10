@@ -4,7 +4,7 @@
 
 ### Basic
 
-**1.** Implement Image Scaling Using the Nearest-Neighbor Interpolation Method
+**1.** Implement Image Scaling Using the Nearest-Neighbor Interpolation Method \\
 **2.** Multi-Channel Support
 **3.** Support for Image Enlargement, Reduction, and Arbitrary Dimensions
 **4.** Slicing and Multi-threading Acceleration
