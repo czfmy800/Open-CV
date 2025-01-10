@@ -1,24 +1,32 @@
-# Open-CV Algorithm Optimization
 
-## Project Requirements 
+# Open-CV 算法优化
 
-### Basic
+## 项目需求与我们的工作
 
-**1.** Implement Image Scaling Using the Nearest-Neighbor Interpolation Method \\
-**2.** Multi-Channel Support
-**3.** Support for Image Enlargement, Reduction, and Arbitrary Dimensions
-**4.** Slicing and Multi-threading Acceleration
-**5.** Comparative Analysis with Built-in OpenCV Algorithms
+## 项目需求与我们的工作
 
-### Bouns
+### 基础需求
 
-**1.** Implementation of the Bilinear Interpolation Algorithm
-**2.** Support for Multiple Data Types, such as U16, F32
-**3.** Using SIMD for Acceleration
-**4.** OpenCV Universal Vector Instruction Set
-**5.** Other Potential Optimization Strategies
+| 需求描述                                   | 状态   | 分值 |
+|--------------------------------------------|--------|------|
+| 使用最近邻插值法实现图像缩放               | 已完成 | 20   |
+| 支持多通道图像                             | 已完成 | 15   |
+| 支持图像放大、缩小以及任意尺寸调整         | 已完成 | 15   |
+| 使用切片和多线程加速                       | 已完成 | 20   |
+| 与 OpenCV 内置算法进行对比分析             | 已完成 | 10   |
 
-## Our Work
+### 附加需求
+
+| 需求描述                                   | 状态   | 分值 |
+|--------------------------------------------|--------|------|
+| 实现双线性插值算法                         | 已完成 | 15   |
+| 支持多种数据类型（如 U16、F32）            | 已完成 | 10   |
+| 使用 SIMD 指令集进行加速                   | 已完成 | 20   |
+| 使用 OpenCV 通用向量指令集                 | 未完成 | 10   |
+| 探索其他潜在的优化策略                     | 未完成 | 15   |
+
+## 我们的工作
+
 
 
  
