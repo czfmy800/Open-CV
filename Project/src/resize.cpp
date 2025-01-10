@@ -14,6 +14,10 @@ void resize(const Mat& src, Mat& dst, double fx, double fy) {
     // 计算目标图像的尺寸
     int dst_rows = static_cast<int>(src_rows / fy);
     int dst_cols = static_cast<int>(src_cols / fx);
+
+    // 更新缩放比例
+    // fx = src_cols / static_cast<double>(dst_cols);
+    // fy = src_rows / static_cast<double>(dst_rows);
     
     // 创建目标图像，类型与源图像相同
     dst.create(dst_rows, dst_cols, src.type());
@@ -22,8 +26,8 @@ void resize(const Mat& src, Mat& dst, double fx, double fy) {
     for (int i = 0; i < dst_rows; ++i) {
         for (int j = 0; j < dst_cols; ++j) {
             // 计算在源图像中的对应位置
-            int src_i = round(i * fy);
-            int src_j = round(j * fx);
+            int src_i = static_cast<int>(i * fy);
+            int src_j = static_cast<int>(j * fx);
 
             // 边界检查，确保不越界
             src_i = min(max(src_i, 0), src_rows - 1);
@@ -63,8 +67,8 @@ void resize_parallel(const Mat& src, Mat& dst, double fx, double fy) {
         for (int i = r.start; i < r.end; ++i) {
             for (int j = 0; j < dst_cols; ++j) {
                 // 计算在源图像中的对应位置
-                int src_i = round(i * fy);
-                int src_j = round(j * fx);
+                int src_i = static_cast<int>(i * fy);
+                int src_j = static_cast<int>(j * fx);
                 // 边界检查
                 src_i = std::clamp(src_i, 0, src_rows - 1);
                 src_j = std::clamp(src_j, 0, src_cols - 1);
@@ -80,35 +84,60 @@ void resize_parallel(const Mat& src, Mat& dst, double fx, double fy) {
     });
 }
 
-// ? const 意义不大
-void resize_parallel_const(const Mat& src, Mat& dst, const double fx, const double fy) {
-    const int src_rows = src.rows;
-    const int src_cols = src.cols;
-    const int src_channels = src.channels();
+void resize_bilinear(const Mat& src, Mat& dst, double fx, double fy) {
+    // 获取源图像的尺寸和通道数
+    int src_rows = src.rows;
+    int src_cols = src.cols;
+    int src_channels = src.channels();
 
-    const int dst_rows = static_cast<int>(src_rows / fy);
-    const int dst_cols = static_cast<int>(src_cols / fx);
+    // 计算目标图像的尺寸
+    int dst_rows = static_cast<int>(src_rows / fy);
+    int dst_cols = static_cast<int>(src_cols / fx);
     
+    // 创建目标图像，类型与源图像相同
     dst.create(dst_rows, dst_cols, src.type());
 
-    cv::parallel_for_(cv::Range(0, dst_rows), [&](const cv::Range& r) {
-        for (int i = r.start; i < r.end; ++i) {
-            for (int j = 0; j < dst_cols; ++j) {
-                int src_i = static_cast<int>(i * fy);
-                int src_j = static_cast<int>(j * fx);
-                src_i = std::clamp(src_i, 0, src_rows - 1);
-                src_j = std::clamp(src_j, 0, src_cols - 1);
-                
-                if (src_channels == 1) {
-                    dst.at<uchar>(i, j) = src.at<uchar>(src_i, src_j);
-                } else {
-                    dst.at<Vec3b>(i, j) = src.at<Vec3b>(src_i, src_j);
+    // 遍历目标图像中的每个像素
+    for (int i = 0; i < dst_rows; ++i) {
+        for (int j = 0; j < dst_cols; ++j) {
+            // 计算在源图像中的对应位置
+            double src_i = (i+0.5)*fx-0.5;
+            double src_j = (j+0.5)*fy-0.5;
+
+            // 计算双线性插值的四个最近邻点
+            int x1 = static_cast<int>(src_i);
+            int y1 = static_cast<int>(src_j);
+            int x2 = x1+1;
+            int y2 = y1+1;
+
+            // 边界检查，确保不越界
+            x1 = min(max(x1, 0), src_rows - 1);
+            y1 = min(max(y1, 0), src_cols - 1);
+            x2 = min(max(x2, 0), src_rows - 1);
+            y2 = min(max(y2, 0), src_cols - 1);
+
+            // 计算双线性插值权重
+            double w_x2 = src_i - x1;
+            double w_x1 = 1-w_x2;
+            double w_y2 = src_j - y1;
+            double w_y1 = 1-w_y2;
+            
+            // 处理单通道和多通道图像
+            if (src_channels == 1) {
+                // 单通道图像（灰度图像）
+                double I_y1 = w_x1*src.at<uchar>(x1, y1) + w_x2*src.at<uchar>(x2, y1);
+                double I_y2 = w_x1*src.at<uchar>(x1, y2) + w_x2*src.at<uchar>(x2, y2);
+                dst.at<uchar>(i, j) = static_cast<uchar>(w_y1*I_y1 + w_y2*I_y2);
+            } else {
+                // 多通道图像（例如RGB图像）
+                for (int c = 0; c < src_channels; ++c) {
+                    double I_y1 = w_x1*src.at<Vec3b>(x1, y1)[c] + w_x2*src.at<Vec3b>(x2, y1)[c];
+                    double I_y2 = w_x1*src.at<Vec3b>(x1, y2)[c] + w_x2*src.at<Vec3b>(x2, y2)[c];
+                    dst.at<Vec3b>(i, j)[c] = static_cast<uchar>(w_y1*I_y1 + w_y2*I_y2);
                 }
             }
         }
-    });
+    }
 }
-
-
 
 

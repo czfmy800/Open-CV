@@ -4,6 +4,8 @@
 #include "resize.h"
 
 int main() {
+    std::cout << "OpenCV version: " << CV_VERSION << std::endl;
+
     // 读取图片
     Mat image = cv::imread("../SUSTech.jpg", cv::IMREAD_COLOR);
     if (image.empty()) {
@@ -24,7 +26,7 @@ int main() {
         resize(image,dst,fx,fy);
         cv::imwrite("../P1_resized_SUSTech.jpg", dst);
         
-        cout << "P1 is down\n";
+        cout << "P1 is down\n\n";
     }
 
     // ---------------------------------------------------------
@@ -45,7 +47,7 @@ int main() {
         resize(image,dst3,fx,fy);
         cv::imwrite("../P2_01_resized_SUSTech_three_channel.jpg", dst3);
 
-        cout << "P2 is down\n";
+        cout << "P2 is down\n\n";
     }
 
     // ---------------------------------------------------------
@@ -66,7 +68,7 @@ int main() {
         resize(image,dst2,fx,fy);
         cv::imwrite("../P3_01_minify_SUSTech.jpg", dst2);
 
-        cout << "P3 is down\n";
+        cout << "P3 is down\n\n";
     }
 
     // ---------------------------------------------------------
@@ -113,7 +115,7 @@ int main() {
         // compare
         std::cout << "speed up: " << time_pre_test.count()/time_pre_test_2.count() << " times" << std::endl;
 
-        cout << "P4 is down\n";
+        cout << "P4 is down\n\n";
     }
 
     // ---------------------------------------------------------
@@ -122,8 +124,8 @@ int main() {
     {
         // save image
         Mat dst1;
-        cv::Size dsize(image.rows/fy, image.cols/fx);
-        cv::resize(image,dst1,dsize,fx,fy,0);
+        cv::Size dsize;
+        cv::resize(image,dst1,cv::Size(),1/fx,1/fy,0);
         cv::imwrite("../P5_00_OpenCV_SUSTech.jpg", dst1);
         Mat dst2;
         resize_parallel(image,dst2,fx,fy);
@@ -133,8 +135,7 @@ int main() {
         auto start = std::chrono::high_resolution_clock::now();
         for (std::size_t i = 0; i < test_times; i++){
             Mat dst;
-            cv::Size dsize(image.rows/fy, image.cols/fx);
-            cv::resize(image,dst,dsize,fx,fy,0);
+            cv::resize(image,dst,cv::Size(),1/fx,1/fy,0);
         }
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = end - start;
@@ -160,11 +161,25 @@ int main() {
         // compare
         std::cout << "OpenCV is speed up: " << time_pre_test_2.count()/time_pre_test_1.count() << " times" << std::endl;             
     
-        cout << "P5 is down\n";
+        cout << "P5 is down\n\n";
     }
 
+    // ---------------------------------------------------------
+    // *                ** B1 双线性插值实现 **                  *
+    // ---------------------------------------------------------
+    {
+        // our function
+        Mat dst;
+        resize_bilinear(image,dst,fx,fy);
+        cv::imwrite("../B1_resized_bilinear_SUSTech.jpg", dst);
 
-
+        // OpenCV
+        Mat dst1;
+        cv::resize(image,dst1,cv::Size(),1/fx,1/fy);
+        cv::imwrite("../B1_OpenCV_bilinear_SUSTech.jpg", dst1);
+        
+        cout << "B1 is down\n\n";
+    }
 
 
     return 0;
